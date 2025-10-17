@@ -21,6 +21,7 @@ export async function fetchCurrentWeather(latitude, longitude) {
   if (!res.ok) throw new Error("Weather fetch failed");
   const json = await res.json();
   const cw = json.current_weather;
+  let humidity = null;
   try {
     if (json.hourly && json.hourly.time && json.hourly.relativehumidity_2m) {
       const nowISO = cw.time;
