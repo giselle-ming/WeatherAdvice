@@ -47,6 +47,7 @@ export default function App() {
           <input
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            onFocus={() => city === "Location..." && setCity("")}
             placeholder="Search city..."
           />
           <button type="submit">Search</button>
