@@ -86,8 +86,8 @@ export default function App() {
                 needed={needUmbrella(data.weathercode)}
                 note={
                   needUmbrella(data.weathercode)
-                    ? "Bring it — possible rain"
-                    : "Not needed — clear skies ahead"
+                    ? "Bring it —> possible rain"
+                    : "Not needed —> clear skies ahead"
                 }
               />
 
@@ -96,8 +96,8 @@ export default function App() {
                 needed={needJacket(data.temperature, data.windspeed)}
                 note={
                   needJacket(data.temperature, data.windspeed)
-                    ? "Yes, bring it — it's chilly"
-                    : "Not needed — mild weather"
+                    ? "Yes, bring it!!"
+                    : "Not needed"
                 }
                 emphasize
               />
@@ -107,7 +107,7 @@ export default function App() {
                 needed={needGloves(data.temperature)}
                 note={
                   needGloves(data.temperature)
-                    ? "Yes — it's cold"
+                    ? "Yes —> it's cold"
                     : "Not needed"
                 }
               />
