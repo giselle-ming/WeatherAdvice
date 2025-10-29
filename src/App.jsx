@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { geocodeCity, fetchCurrentWeather } from "./api/weather";
 import NeedCard from "./components/NeedCard";
+import ConfigModal from "./components/ConfigModal";
+
+const DEFAULT_THRESHOLDS = {
+  jacketTemp: 18,
+  jacketWind: 20,
+  glovesTemp: 8,
+};
 
 export default function App() {
   const [city, setCity] = useState("Location...");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [data, setData] = useState(null);
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [thresholds, setThresholds] = useState(() => {
+    const saved = localStorage.getItem("weatherThresholds");
+    return saved ? JSON.parse(saved) : DEFAULT_THRESHOLDS;
+  });
 
   async function handleSearch(e) {
     e?.preventDefault();
@@ -33,16 +45,29 @@ export default function App() {
     return weathercode >= 51 || weathercode >= 80 || weathercode >= 95;
   }
   function needJacket(tempC, windKmh) {
-    return tempC <= 18 || windKmh >= 20;
+    return tempC <= thresholds.jacketTemp || windKmh >= thresholds.jacketWind;
   }
   function needGloves(tempC) {
-    return tempC <= 8;
+    return tempC <= thresholds.glovesTemp;
   }
+
+  const handleSaveThresholds = (newThresholds) => {
+    setThresholds(newThresholds);
+    localStorage.setItem("weatherThresholds", JSON.stringify(newThresholds));
+  };
 
   return (
     <div className="app">
       <header className="top">
-        <h1>Weather</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <h1>Weather</h1>
+          <button
+            className="settings-button"
+            onClick={() => setIsConfigOpen(true)}
+          >
+            ⚙️
+          </button>
+        </div>
         <form onSubmit={handleSearch} className="search">
           <input
             value={city}
@@ -53,6 +78,13 @@ export default function App() {
           <button type="submit">Search</button>
         </form>
       </header>
+
+      <ConfigModal
+        isOpen={isConfigOpen}
+        onClose={() => setIsConfigOpen(false)}
+        values={thresholds}
+        onSave={handleSaveThresholds}
+      />
 
       <main>
         {loading && <div className="card big">Loading…</div>}
@@ -112,6 +144,16 @@ export default function App() {
                     : "Not needed"
                 }
               />
+              {/* 
+              <NeedCard
+                title="Scarf"
+                needed={needScarf(data.temperature)}
+                note={
+                  needScarf(data.temperature)
+                    ? "Yes —> it's freezing"
+                    : "Not needed"
+                }
+              /> */}
             </section>
           </>
         )}
