@@ -144,7 +144,7 @@ export default function App() {
                     : "Not needed"
                 }
               />
-              {/* 
+
               <NeedCard
                 title="Scarf"
                 needed={needScarf(data.temperature)}
@@ -153,7 +153,7 @@ export default function App() {
                     ? "Yes —> it's freezing"
                     : "Not needed"
                 }
-              /> */}
+              />
             </section>
           </>
         )}

@@ -1,3 +1,9 @@
+/**
+ * Geocode a city name into latitude and longitude coordinates.
+ * @param {string} name City name to geocode.
+ * @return {Promise<Object>} Geocoded city object with name, country, latitude and longitude.
+ * @throws {Error} Geocoding failed.
+ */
 export async function geocodeCity(name) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
     name
@@ -15,6 +21,13 @@ export async function geocodeCity(name) {
   };
 }
 
+/**
+ * Fetch the current weather data from the Open-Meteo API.
+ * @param {number} latitude Latitude coordinate of the location.
+ * @param {number} longitude Longitude coordinate of the location.
+ * @return {Promise<Object>} Current weather data object with temperature (°C), windspeed (km/h), weathercode, description, and humidity (%).
+ * @throws {Error} Weather fetch failed.
+ */
 export async function fetchCurrentWeather(latitude, longitude) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relativehumidity_2m&timezone=auto&temperature_unit=celsius&windspeed_unit=kmh`;
   const res = await fetch(url);
@@ -41,6 +54,11 @@ export async function fetchCurrentWeather(latitude, longitude) {
   };
 }
 
+/**
+ * Decodes the Open-Meteo weathercode into a human-readable description.
+ * @param {number} code The Open-Meteo weathercode.
+ * @return {string} Human-readable description of the weather.
+ */
 function decodeWeathercode(code) {
   if (code === 0) return "Clear";
   if (code === 1 || code === 2 || code === 3) return "Partly cloudy";
