@@ -50,6 +50,14 @@ export default function App() {
   function needGloves(tempC) {
     return tempC <= thresholds.glovesTemp;
   }
+  /**
+   * Checks if the temperature is below 0°C, and if so, returns true.
+   * @param {number} tempC The temperature in Celsius.
+   * @returns {boolean} If the temperature is below 0°C.
+   */
+  function needScarf(tempC) {
+    return tempC <= 0;
+  }
 
   const handleSaveThresholds = (newThresholds) => {
     setThresholds(newThresholds);
